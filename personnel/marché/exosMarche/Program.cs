@@ -98,21 +98,7 @@
 
         static string Watermelon(List<Data> dataList)
         {
-            int max = int.MinValue;
-            Data merchant = null;
-            
-            foreach (var data in dataList)
-            {
-                if (data.Produit == "Pastèques")
-                {
-                    if (data.Quantite > max)
-                    {
-                        max = data.Quantite;
-                        merchant = data;  
-                    }
-                }
-            }
-
+            Data merchant = dataList.Where((data) => data.Produit == "Pastèques").MaxBy(p => p.Quantite); 
             return $"C'est {merchant.Producteur} qui a le plus de pastèques (stand {merchant.Emplacement}, {merchant.Quantite} pièces)";
         }
 
