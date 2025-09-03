@@ -25,10 +25,16 @@ namespace exoWords
 
             words.Where(word => !word.Contains(' ') && !word.Contains('!')).ToList().ForEach(word=>Console.WriteLine(word));*/
 
-            string[] words = { "+++++", "<<<<<", ">>>>>", "bonjour", "hello", "@@@@", "vert", "rouge", "bleu", "jaune", "#####", "%%%%%%%" };
+            /*string[] words = { "+++++", "<<<<<", ">>>>>", "bonjour", "hello", "@@@@", "vert", "rouge", "bleu", "jaune", "#####", "%%%%%%%" };
 
 
-            words.Where(word =>!Regex.IsMatch(word, "[@+<>#%]")).ToList().ForEach(word=>Console.WriteLine(word));
+            words.Where(word =>!Regex.IsMatch(word, "[@+<>#%]")).ToList().ForEach(word=>Console.WriteLine(word));*/
+
+
+            string[] words = { "i am the winner", "hello", "monde", "vert", "rouge", "bleu", "i am the looser" };
+
+            Console.WriteLine("The winner is : "+words.First());
+            Console.WriteLine("The looser is : "+words.Last());
         }
     }
 }
