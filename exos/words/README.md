@@ -48,7 +48,7 @@ string[] words = {"+++++","<<<<<",">>>>>", "bonjour", "hello", "@@@@", "vert", "
 #### SkipWhile
 Peut-on s’en sortir avec un SkipWhile ?
 Si oui comment ?
-Sinon pourquoi ?
+Sinon pourquoi ? non vu que des que c'est true ça return le reste de la liste
 
 #### Aide
 
