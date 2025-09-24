@@ -18,5 +18,7 @@ namespace Rando
             longitude = lon;
             elevation = ele;
         }
+
+
     }
 }
