@@ -15,46 +15,44 @@ namespace Rando
 
         private void Rando_Form_Paint(object sender, PaintEventArgs e)
         {
-            Pen myPen = new Pen(Color.Red);
-            myPen.Width = 2;
+            Pen myPen = new Pen(Color.Red,2);
 
             ReadGpx("C:\\Users\\pe41bnd\\Documents\\GitHub\\323-Programmation_fonctionnelle\\personnel\\rando\\gpx\\Ballade_châtaignère_🌰.gpx");
-            
-            System.Drawing.Point[] points = new System.Drawing.Point[4] { new System.Drawing.Point(30, 50), new System.Drawing.Point(50, 10), new System.Drawing.Point(80, 50), new System.Drawing.Point(111, 400) };
-            this.CreateGraphics().DrawLines(myPen, points);
+
+            var points = ConvertToPoints(_trackpoints, this.ClientSize);
+
+            this.CreateGraphics().DrawLines(myPen, points.ToArray());
         }
 
 
         public void ReadGpx(string filePath)
         {
-            // This code example demonstrates how to read waypoints from GPX file
-            // Load the GPX file
             var layer = Drivers.Gpx.OpenLayer(filePath);
             Debug.WriteLine("path : " + filePath);
             layer.ToList().ForEach(feature =>
             {
                 Debug.WriteLine("douce : " + feature.Geometry.GeometryType);
-                // Check for Point geometry
+                
                 if (feature.Geometry.GeometryType == GeometryType.MultiLineString)
                 {
                     Debug.WriteLine("dedant : " + feature.ToString());
-                    // Read Points
+                    
                     var lines = (MultiLineString)feature.Geometry;
                     lines.ToList().ForEach(line =>
                     {
-                        List<string> coordoneeslines = line.AsText().ToString().Replace("LINESTRING Z (", "").Replace(")", "").Split(",").ToList();
-                        coordoneeslines.ForEach(coordoneesline => {
+                        List<string> coordslines = line.AsText().ToString().Replace("LINESTRING Z (", "").Replace(")", "").Split(",").ToList();
+                        coordslines.ForEach(coordsline => {
                             
-                            List<string> coords = coordoneesline.ToString().Trim().Split(" ").ToList();
+                            List<string> coords = coordsline.ToString().Trim().Split(" ").ToList();
 
 
-                            double lag = double.Parse(coords.First().ToString());
+                            double lat = double.Parse(coords.First().ToString());
                             double lon = double.Parse(coords.Skip(1).First().ToString());
                             double ele = double.Parse(coords.Last().ToString());
-                            Debug.WriteLine("lag : " + lag);
+                            Debug.WriteLine("lag : " + lat);
                             Debug.WriteLine("lon : " + lon);
                             Debug.WriteLine("ele : " + ele);
-                            _trackpoints.Add(new Trackpoint(lag,lon,ele));
+                            _trackpoints.Add(new Trackpoint(lat, lon,ele));
                         });
 
                     });
@@ -62,5 +60,29 @@ namespace Rando
             });
         }
 
+        private List<System.Drawing.Point> ConvertToPoints(List<Trackpoint> trackpoints, Size size)
+        {
+            double minLat = trackpoints.Min(tp => tp.latitude);
+            double maxLat = trackpoints.Max(tp => tp.latitude);
+            double minLon = trackpoints.Min(tp => tp.longitude);
+            double maxLon = trackpoints.Max(tp => tp.longitude);
+
+            double scaleX = size.Width / (maxLon - minLon);
+            double scaleY = size.Height / (maxLat - minLat);
+
+
+            double scale = Math.Min(scaleX, scaleY);
+
+            List<System.Drawing.Point> points = new List<System.Drawing.Point>();
+            trackpoints.ForEach(tp =>
+            {
+                int x = (int)((tp.longitude - minLon) * scale);
+                int y = (int)((maxLat - tp.latitude) * scale); // inverser Y pour que le Nord soit en haut
+                points.Add(new System.Drawing.Point(x, y));
+
+            });
+
+            return points;
+        }
     }
 }

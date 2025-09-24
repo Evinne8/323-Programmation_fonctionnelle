@@ -8,15 +8,15 @@ namespace Rando
 {
     class Trackpoint
     {
-        private double _latitude;
-        private double _longitude;
-        private double _elevation;
+        public double latitude { get; }
+        public double longitude { get; }
+        public double elevation { get; }
 
-        public Trackpoint(double latitude, double longitude, double elevation)
+        public Trackpoint(double lat, double lon, double ele)
         {
-            _latitude = latitude;
-            _longitude = longitude;
-            _elevation = elevation;
+            latitude = lat;
+            longitude = lon;
+            elevation = ele;
         }
     }
 }
