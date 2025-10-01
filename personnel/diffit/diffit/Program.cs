@@ -18,7 +18,7 @@ Console.Write("Fichier B: ");
 string? pathB = Console.ReadLine();
 
 // Vérification des entrées utilisateur
-var paths = new string?[] { pathA, pathB };
+var paths = new string?[] { $"{pathA}.txt", $"{pathB}.txt" };
 bool filesAreValid = paths.Aggregate(true, (a, b) => a && b != null && File.Exists(b));
 if (!filesAreValid)
 {
@@ -28,10 +28,10 @@ if (!filesAreValid)
 
 /// CHARGEMENT DES DONNÉES
 // TODO: 01 Charger le contenu texte du fichier A (indice: File.ReadAllLines...)
-List<string> linesA = File.ReadAllLines(pathA).ToList();
+List<string> linesA = File.ReadAllLines($"{pathA}.txt").ToList();
 
 // TODO: 02 Charger le contenu texte du fichier B (indice: File.ReadAllLines...)
-List<string> linesB = File.ReadAllLines(pathB).ToList();
+List<string> linesB = File.ReadAllLines($"{pathB}.txt").ToList();
 
 // TODO: 03 Vérifier que les fichier ont le même nombre de lignes
 if (linesA.Count != linesB.Count)
@@ -121,6 +121,21 @@ Console.WriteLine($"Il y a {diffLines.Count} lignes différentes entre les deux 
 // ATTENTION: zip ne prend que le nombre d’éléments minimum commun entre 2 listes...
 // Ceci implique une correction: en plus du nombre de différences, il faut ajouter la différence du nombre de caractères entre les deux...
 Func<LinesComparison, int> countVariations = _ => -1;
+diffLines.ForEach(c =>
+{
+    int diffChar = 0;
+    var character = c.ContentA.Zip(c.ContentB, (a,b) => new {charA = a, charB = b}).ToList();
+    character.ForEach(l =>
+    {
+        if(l.charA != l.charB)
+            diffChar++;
+    });
+    if (c.LengthVariation > 0)
+        diffChar+= c.LengthVariation;
+    if (diffChar > 0)
+        Console.WriteLine($"Pour: {c.ContentA} || {c.ContentB}\nIl y a {diffChar} charactères différents\n");
+});
+
 
 // TODO: 10 Afficher pour chaque ligne différente, le nombre de variations
 
