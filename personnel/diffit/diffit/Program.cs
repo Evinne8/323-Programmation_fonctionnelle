@@ -74,7 +74,6 @@ linesA.ForEach(l =>
         l= cleanTabs(l);
     if (ignoreCase)
         l=enforceCase(l);
-    Console.WriteLine("asd ||" + l);
     linesATemp.Add(l);
     
 });
@@ -86,15 +85,12 @@ linesB.ForEach(l =>
         l = cleanTabs(l);
     if (ignoreCase)
         l = enforceCase(l);
-    Console.WriteLine("asd ||"+l);
     linesBTemp.Add(l);
 });
 linesA.Clear();
 linesB.Clear();
 linesA = linesATemp;
 linesB = linesBTemp;
-linesA.ForEach(l => Console.WriteLine(l));
-linesB.ForEach(l => Console.WriteLine(l));
 
 
 // TODO: 06 Créer et remplir une liste de LinesComparison à partir de linesA et linesB
@@ -104,6 +100,14 @@ result.ForEach(r=>comparisons.Add(new LinesComparison(r.A, r.B)));
 
 // TODO: 07 Sélectionner les lignes qui ont des différences
 var diffLines = new List<LinesComparison>();
+
+comparisons.ForEach(c =>
+{
+    if (c.ContentA != c.ContentB)
+    {
+        diffLines.Add(c);
+    }
+});
 
 // TODO: 08 Afficher le nombre de lignes identiques et différentes entre les 2 fichiers
 
