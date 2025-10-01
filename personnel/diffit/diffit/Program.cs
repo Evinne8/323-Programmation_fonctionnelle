@@ -98,7 +98,9 @@ linesB.ForEach(l => Console.WriteLine(l));
 
 
 // TODO: 06 Créer et remplir une liste de LinesComparison à partir de linesA et linesB
-List <LinesComparison> comparisons = new();
+List <LinesComparison> comparisons = new List<LinesComparison>();
+var result = linesA.Zip(linesB, (a, b) => new {A = a,B=b}).ToList();
+result.ForEach(r=>comparisons.Add(new LinesComparison(r.A, r.B)));
 
 // TODO: 07 Sélectionner les lignes qui ont des différences
 var diffLines = new List<LinesComparison>();
@@ -136,6 +138,12 @@ public class LinesComparison
     public int Number { get; set; }
     public string ContentA { get; set; } = "";
     public string ContentB { get; set; } = "";
+
+    public LinesComparison(string contentA,string contentB)
+    {
+        ContentA = contentA;
+        ContentB = contentB;
+    }
 
     /// <summary>
     /// Ajuste le numéro de ligne...
