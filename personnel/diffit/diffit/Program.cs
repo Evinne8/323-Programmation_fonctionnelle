@@ -127,13 +127,13 @@ diffLines.ForEach(c =>
     var character = c.ContentA.Zip(c.ContentB, (a,b) => new {charA = a, charB = b}).ToList();
     character.ForEach(l =>
     {
-        if(l.charA != l.charB)
+        if (l.charA != l.charB)
             diffChar++;
     });
     if (c.LengthVariation > 0)
         diffChar+= c.LengthVariation;
     if (diffChar > 0)
-        Console.WriteLine($"Pour: {c.ContentA} || {c.ContentB}\nIl y a {diffChar} charactères différents\n");
+        Console.WriteLine($"\nPour: {c.ContentA} || {c.ContentB}\nIl y a {diffChar} charactères différents\n");
 });
 
 
